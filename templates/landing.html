@@ -21,7 +21,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-hero">Create free account</a>
-            <a href="#" class="btn-hero">See how it works</a>
+            <a href="#" class="btn-hero" id="open-modal">See how it works</a>
         </div>
     </div>
     <div class="hero-browser">
@@ -94,4 +94,44 @@
     </div>
 </section>
 
+<div id="video-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button id="close-modal" class="modal-close" aria-label="Close">&times;</button>
+        <div class="modal-video">
+            <iframe id="video-iframe" src="" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('video-iframe');
+    const VIDEO_SRC = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+
+    document.getElementById('open-modal').addEventListener('click', function (e) {
+        e.preventDefault();
+        iframe.src = VIDEO_SRC;
+        modal.classList.add('is-open');
+    });
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+        iframe.src = '';
+    }
+
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
 {% endblock %}
