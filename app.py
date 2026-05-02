@@ -95,7 +95,36 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = {
+        "name": "Priya Sharma",
+        "email": "priya@example.com",
+        "initials": "PS",
+        "member_since": "January 2024",
+    }
+    stats = {
+        "total_spent": "₹42,850",
+        "transaction_count": 27,
+        "top_category": "Food & Dining",
+    }
+    transactions = [
+        {"date": "Apr 28, 2025", "description": "Zomato order",           "category": "Food & Dining", "amount": "₹340"},
+        {"date": "Apr 25, 2025", "description": "Metro card recharge",    "category": "Transport",     "amount": "₹500"},
+        {"date": "Apr 22, 2025", "description": "BookMyShow",             "category": "Entertainment", "amount": "₹850"},
+        {"date": "Apr 19, 2025", "description": "Big Basket groceries",   "category": "Groceries",     "amount": "₹1,240"},
+        {"date": "Apr 15, 2025", "description": "Electricity bill",       "category": "Utilities",     "amount": "₹2,100"},
+    ]
+    categories = [
+        {"name": "Food & Dining", "amount": "₹14,200", "pct": 33},
+        {"name": "Groceries",     "amount": "₹9,800",  "pct": 23},
+        {"name": "Utilities",     "amount": "₹7,500",  "pct": 18},
+        {"name": "Transport",     "amount": "₹5,350",  "pct": 12},
+        {"name": "Entertainment", "amount": "₹6,000",  "pct": 14},
+    ]
+    return render_template("profile.html", user=user, stats=stats,
+                           transactions=transactions, categories=categories)
 
 
 @app.route("/expenses/add")
