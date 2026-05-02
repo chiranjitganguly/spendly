@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def get_db():
@@ -57,6 +57,15 @@ def get_user_by_email(email):
     ).fetchone()
     conn.close()
     return user
+
+
+def verify_user(email, password):
+    user = get_user_by_email(email)
+    if user is None:
+        return None
+    if check_password_hash(user["password_hash"], password):
+        return user
+    return None
 
 
 def seed_db():
